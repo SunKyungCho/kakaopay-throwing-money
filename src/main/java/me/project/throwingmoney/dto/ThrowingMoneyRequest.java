@@ -1,7 +1,9 @@
 package me.project.throwingmoney.dto;
 
+import lombok.Getter;
 import org.springframework.util.Assert;
 
+@Getter
 public class ThrowingMoneyRequest {
 
     private int userId;

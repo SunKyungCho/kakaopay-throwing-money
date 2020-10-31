@@ -1,1 +1,12 @@
 
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/throwing_money_db;AUTO_SERVER=TRUE
+    username: skcho
+    password: skcho
+    driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create

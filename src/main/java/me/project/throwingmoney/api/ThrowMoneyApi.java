@@ -1,8 +1,10 @@
 package me.project.throwingmoney.api;
 
 
+import lombok.RequiredArgsConstructor;
 import me.project.throwingmoney.dto.ThrowingMoneyResponse;
 import me.project.throwingmoney.dto.ThrowingMoneyRequest;
+import me.project.throwingmoney.service.ThrowMoneyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -10,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class ThrowMoneyApi {
 
     private final ThrowMoneyService throwMoneyService;
 
-    @PostMapping("/throw-money")
+    @PostMapping("/throw-moneys")
     public ResponseEntity<ThrowingMoneyResponse> throwMoney(
             @RequestHeader(value = "X-USER-ID", required = false) Integer userId,
             @RequestHeader(value = "X-ROOM-ID", required = false) String talkingRoom,
