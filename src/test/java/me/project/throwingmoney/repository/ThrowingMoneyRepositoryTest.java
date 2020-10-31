@@ -35,17 +35,7 @@ class ThrowingMoneyRepositoryTest {
                 .build();
         throwingMoneyRepository.save(testThrowMoney1);
 
-        ThrowMoney testThrowMoney2 = ThrowMoney.builder()
-                .talkingRoom(talkingRoom)
-                .amount(10000)
-                .divideCount(5)
-                .thrower(1)
-                .token(Token.valueOf("tst", LocalDateTime.now().minusMinutes(10)))
-                .build();
-        throwingMoneyRepository.save(testThrowMoney2);
-
         List<ThrowMoney> list = throwingMoneyRepository.findThrowMoneyByTokenAndTalkingRoom(talkingRoom, token.getValue());
-        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.size()).isEqualTo(1);
     }
-
 }
