@@ -96,4 +96,26 @@ class ThrowingMoneyDaoTest {
         // than
         Assertions.assertThrows(ThrowingMoneyNotFoundException.class, () -> throwingMoneyDao.findThrowMoney(talkingRoom, token));
     }
+
+    @Test
+    @DisplayName("대화방에 돈뿌리기 조회를 한다")
+    @Transactional
+    void throwingMoneyStateTest() {
+        //given
+        Token token = Token.valueOf("2k3", LocalDateTime.now().minusMinutes(10));
+        String talkingRoom = "test0-tst";
+        ThrowMoney testThrowMoney1 = ThrowMoney.builder()
+                .talkingRoom(talkingRoom)
+                .amount(10000)
+                .divideCount(5)
+                .thrower(1)
+                .token(token)
+                .build();
+        throwingMoneyRepository.save(testThrowMoney1);
+
+        // than
+        ThrowMoney throwMoneyState = throwingMoneyDao.getThrowMoneyState(talkingRoom, token);
+        System.out.println();
+    }
+
 }

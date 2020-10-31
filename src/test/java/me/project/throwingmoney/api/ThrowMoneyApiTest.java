@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(controllers = ThrowMoneyApi.class)
+@DisplayName("돈뿌리기를 실행한다")
 class ThrowMoneyApiTest {
 
     @MockBean

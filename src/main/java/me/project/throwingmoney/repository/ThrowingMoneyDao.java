@@ -4,6 +4,7 @@ package me.project.throwingmoney.repository;
 import lombok.RequiredArgsConstructor;
 import me.project.throwingmoney.domain.ThrowMoney;
 import me.project.throwingmoney.domain.Token;
+import me.project.throwingmoney.error.StateTokenExpireException;
 import me.project.throwingmoney.error.ThrowingMoneyNotFoundException;
 import me.project.throwingmoney.error.TokenExpireException;
 import org.springframework.stereotype.Repository;
@@ -31,11 +32,22 @@ public class ThrowingMoneyDao {
     public ThrowMoney findThrowMoney(String talkingRoom, Token token) {
         List<ThrowMoney> throwMoneys = throwingMoneyRepository.findThrowMoneyByTokenAndTalkingRoom(talkingRoom, token.getValue());
         if (throwMoneys.isEmpty()) {
-            throw new ThrowingMoneyNotFoundException("It does not exist. talkingRoom: " + talkingRoom + " token: " + token);
+            throw new ThrowingMoneyNotFoundException("It does not exist. talkingRoom: " + talkingRoom + " token: " + token.getValue());
         }
         return throwMoneys.stream()
                 .filter(x -> !x.isExpired())
                 .findFirst()
-                .orElseThrow(() -> new TokenExpireException("Token has expired. token: " + token));
+                .orElseThrow(() -> new TokenExpireException("Token has expired. token: " + token.getValue()));
+    }
+
+    public ThrowMoney getThrowMoneyState(String talkingRoom, Token token) {
+        List<ThrowMoney> throwMoneys = throwingMoneyRepository.findThrowMoneyByTokenAndTalkingRoom(talkingRoom, token.getValue());
+        if (throwMoneys.isEmpty()) {
+            throw new ThrowingMoneyNotFoundException("It does not exist. talkingRoom: " + talkingRoom + " token: " + token.getValue());
+        }
+        return throwMoneys.stream()
+                .filter(x -> !x.canReadStat())
+                .findFirst()
+                .orElseThrow(() -> new StateTokenExpireException("Token has expired. token: " + token.getValue()));
     }
 }

@@ -36,6 +36,7 @@ public class ErrorHandler {
      * */
     @ExceptionHandler(StateTokenExpireException.class)
     protected ResponseEntity<ErrorResponse> handleStateTokenExpireException(StateTokenExpireException e) {
+        log.info(e.getMessage());
         ErrorResponse errorResponse = ErrorResponse.messageOf("Read state token is expired. You can view it within 7 days");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -46,7 +47,7 @@ public class ErrorHandler {
     @ExceptionHandler(TokenExpireException.class)
     protected ResponseEntity<ErrorResponse> handleTokenExpireException(TokenExpireException e) {
         log.error("Token Expired: " + e.getMessage());
-        ErrorResponse errorResponse = ErrorResponse.messageOf("Please run it again in a few minutes.");
+        ErrorResponse errorResponse = ErrorResponse.messageOf(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -55,7 +56,7 @@ public class ErrorHandler {
      * */
     @ExceptionHandler(ThrowingMoneyNotFoundException.class)
     protected ResponseEntity<ErrorResponse> handleThrowMoneyNotFoundException(ThrowingMoneyNotFoundException e) {
-        ErrorResponse errorResponse = ErrorResponse.messageOf("Bad token information");
+        ErrorResponse errorResponse = ErrorResponse.messageOf(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -64,7 +65,16 @@ public class ErrorHandler {
      * */
     @ExceptionHandler(TokenDuplicationException.class)
     protected ResponseEntity<ErrorResponse> handleTokenDuplicationException(TokenDuplicationException e) {
-        ErrorResponse errorResponse = ErrorResponse.messageOf("Please run it again in a few minutes.");
+        ErrorResponse errorResponse = ErrorResponse.messageOf(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /*
+     * 뿌려진 돈을 모두 가져가고 남은 것이 없는 경우
+     * */
+    @ExceptionHandler(EmptyMoneyException.class)
+    protected ResponseEntity<ErrorResponse> handleTokenDuplicationException(EmptyMoneyException e) {
+        ErrorResponse errorResponse = ErrorResponse.messageOf(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
